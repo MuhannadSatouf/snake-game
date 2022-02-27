@@ -2,11 +2,13 @@ function getRandomInt() {
   return Math.floor(Math.random() * (19 - 1 + 1) + 1);
 }
 //Board size is 20 x 20
-
+var scoreboard = document.getElementById("score");
+var bestScoreboard = document.getElementById("bestScore");
 let direction = { x: 0, y: 0 };
 let snakeSpeed = 5;
 let lastPosition = 0;
 let score = 0;
+let bestScore = localStorage.getItem("bestScore");
 //Start positions
 let snakeArray = [{ x: getRandomInt(), y: getRandomInt() }];
 let applePositions = { x: getRandomInt(), y: getRandomInt() };
@@ -20,6 +22,14 @@ function main(current) {
   updateSnakePosition();
 }
 
+//Check Scores
+if (bestScore === null) {
+  bestScoreFromLocal = 0;
+  localStorage.setItem("bestScore", JSON.stringify(bestScoreFromLocal));
+} else {
+  bestScoreFromLocal = JSON.parse(bestScore);
+  bestScoreboard.innerHTML = "Best Score: " + bestScore;
+}
 //Collision Methods
 function CheckCollision(snake) {
   for (let i = 1; i < snakeArray.length; i++) {
@@ -53,9 +63,17 @@ function updateSnakePosition() {
     snakeArray[0].y === applePositions.y &&
     snakeArray[0].x === applePositions.x
   ) {
-    score += 1;
+    console.log(score);
 
-    score.innerHTML = "Score: " + score;
+    //Update scores best and current
+    score += 1;
+    if (score > bestScoreFromLocal) {
+      bestScoreFromLocal = score;
+      //Local Storage for Highest score
+      localStorage.setItem("bestscore", JSON.stringify(bestScoreFromLocal));
+      bestScore.innerHTML = "Best Score: " + bestScoreFromLocal;
+    }
+    scoreboard.innerHTML = "Score: " + score;
     snakeArray.unshift({
       x: snakeArray[0].x + direction.x,
       y: snakeArray[0].y + direction.y,
