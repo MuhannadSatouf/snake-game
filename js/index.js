@@ -1,12 +1,15 @@
+function getRandomInt() {
+  return Math.floor(Math.random() * (19 - 1 + 1) + 1);
+}
 //Board size is 20 x 20
 
 let direction = { x: 0, y: 0 };
 let snakeSpeed = 5;
 let lastPosition = 0;
-
+let score = 0;
 //Start positions
-let snakeArray = [{ x: 15, y: 15 }];
-let apple = { x: 8, y: 8 };
+let snakeArray = [{ x: getRandomInt(), y: getRandomInt() }];
+let applePositions = { x: getRandomInt(), y: getRandomInt() };
 
 function main(current) {
   window.requestAnimationFrame(main);
@@ -19,6 +22,11 @@ function main(current) {
 
 //Collision Methods
 function CheckCollision(snake) {
+  for (let i = 1; i < snakeArray.length; i++) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+      return true;
+    }
+  }
   // check wall
   if (
     snake[0].x >= 20 ||
@@ -35,9 +43,29 @@ function CheckCollision(snake) {
 function updateSnakePosition() {
   board.innerHTML = "";
   if (CheckCollision(snakeArray)) {
-    direction = { x: 0, y: 0 };
     alert("Game Over!");
+    direction = { x: 0, y: 0 };
     snakeArray = [{ x: 15, y: 15 }];
+    score = 0;
+  }
+
+  if (
+    snakeArray[0].y === applePositions.y &&
+    snakeArray[0].x === applePositions.x
+  ) {
+    score += 1;
+
+    score.innerHTML = "Score: " + score;
+    snakeArray.unshift({
+      x: snakeArray[0].x + direction.x,
+      y: snakeArray[0].y + direction.y,
+    });
+    let a = 2;
+    let b = 16;
+    applePositions = {
+      x: Math.round(a + (b - a) * Math.random()),
+      y: Math.round(a + (b - a) * Math.random()),
+    };
   }
 
   for (let i = snakeArray.length - 2; i >= 0; i--) {
@@ -61,8 +89,8 @@ function updateSnakePosition() {
 
   // Display the Apple
   appleObject = document.createElement("div");
-  appleObject.style.gridRowStart = apple.y;
-  appleObject.style.gridColumnStart = apple.x;
+  appleObject.style.gridRowStart = applePositions.y;
+  appleObject.style.gridColumnStart = applePositions.x;
   appleObject.classList.add("apple");
   board.appendChild(appleObject);
 }
