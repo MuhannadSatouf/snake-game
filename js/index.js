@@ -1,18 +1,12 @@
-// Random number for positions
-function getRandomInt() {
-  console.log(Math.floor(Math.random() * 18));
-  return Math.floor(Math.random() * 18);
-}
-
 //Board size is 20 x 20
 
-let direction = { xPosition: 0, yPosition: 0 };
+let direction = { x: 0, y: 0 };
 let snakeSpeed = 5;
 let lastPosition = 0;
 
 //Start positions
-let snakeArray = [{ xPosition: getRandomInt(), yPosition: getRandomInt() }];
-let apple = { xPosition: getRandomInt(), yPosition: getRandomInt() };
+let snakeArray = [{ x: 15, y: 15 }];
+let apple = { x: 8, y: 8 };
 
 function main(current) {
   window.requestAnimationFrame(main);
@@ -25,68 +19,37 @@ function main(current) {
 
 //Collision Methods
 function CheckCollision(snake) {
-  //Check for walls
+  // check wall
   if (
-    snake[0].xPosition >= 20 ||
-    snake[0].xPosition <= 0 ||
-    snake[0].yPosition >= 20 ||
-    snake[0].yPosition <= 0
+    snake[0].x >= 20 ||
+    snake[0].y >= 20 ||
+    snake[0].x <= 0 ||
+    snake[0].y <= 0
   ) {
     return true;
   }
-
   return false;
 }
 
-//Moving snake
-window.requestAnimationFrame(main);
-window.addEventListener("keydown", (e) => {
-  direction = { xPosition: 0, yPosition: 1 };
-
-  switch (e.key) {
-    case "ArrowUp":
-      direction.xPosition = 0;
-      direction.yPosition = -1;
-      break;
-
-    case "ArrowDown":
-      direction.xPosition = 0;
-      direction.yPosition = 1;
-      break;
-
-    case "ArrowLeft":
-      direction.xPosition = -1;
-      direction.yPosition = 0;
-      break;
-
-    case "ArrowRight":
-      direction.xPosition = 1;
-      direction.yPosition = 0;
-      break;
-    default:
-      break;
-  }
-});
-
 //Update snake position
 function updateSnakePosition() {
+  board.innerHTML = "";
   if (CheckCollision(snakeArray)) {
-    direction = { xPosition: 0, yPosition: 0 };
+    direction = { x: 0, y: 0 };
     alert("Game Over!");
-    snakeArray = [{ xPosition: 15, yPosition: 15 }];
+    snakeArray = [{ x: 15, y: 15 }];
   }
 
   for (let i = snakeArray.length - 2; i >= 0; i--) {
     snakeArray[i + 1] = { ...snakeArray[i] };
   }
 
-  snakeArray[0].xPosition += direction.xPosition;
-  snakeArray[0].yPosition += direction.yPosition;
-  board.innerHTML = "";
+  snakeArray[0].x += direction.x;
+  snakeArray[0].y += direction.y;
   snakeArray.forEach((e, index) => {
     snakeObject = document.createElement("div");
-    snakeObject.style.gridRowStart = e.yPosition;
-    snakeObject.style.gridColumnStart = e.xPosition;
+    snakeObject.style.gridRowStart = e.y;
+    snakeObject.style.gridColumnStart = e.x;
 
     if (index === 0) {
       snakeObject.classList.add("snakeHead");
@@ -98,8 +61,38 @@ function updateSnakePosition() {
 
   // Display the Apple
   appleObject = document.createElement("div");
-  appleObject.style.gridRowStart = apple.yPosition;
-  appleObject.style.gridColumnStart = apple.xPosition;
+  appleObject.style.gridRowStart = apple.y;
+  appleObject.style.gridColumnStart = apple.x;
   appleObject.classList.add("apple");
   board.appendChild(appleObject);
 }
+
+//Moving snake
+window.requestAnimationFrame(main);
+window.addEventListener("keydown", (e) => {
+  direction = { x: 0, y: 1 };
+
+  switch (e.key) {
+    case "ArrowUp":
+      direction.x = 0;
+      direction.y = -1;
+      break;
+
+    case "ArrowDown":
+      direction.x = 0;
+      direction.y = 1;
+      break;
+
+    case "ArrowLeft":
+      direction.x = -1;
+      direction.y = 0;
+      break;
+
+    case "ArrowRight":
+      direction.x = 1;
+      direction.y = 0;
+      break;
+    default:
+      break;
+  }
+});
