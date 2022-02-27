@@ -1,15 +1,19 @@
+//-------------Random number for positions-------------
 function getRandomInt() {
   return Math.floor(Math.random() * (19 - 1 + 1) + 1);
 }
 //Board size is 20 x 20
-var scoreboard = document.getElementById("score");
+
+//-------------Main Variables-------------
 var bestScoreboard = document.getElementById("bestScore");
-let direction = { x: 0, y: 0 };
-let snakeSpeed = 5;
-let lastPosition = 0;
-let score = 0;
 let bestScore = localStorage.getItem("bestScore");
-//Start positions
+var scoreboard = document.getElementById("score");
+let direction = { x: 0, y: 0 };
+let lastPosition = 0;
+let snakeSpeed = 5;
+let score = 0;
+
+//-------------Start positions-------------
 let snakeArray = [{ x: getRandomInt(), y: getRandomInt() }];
 let applePositions = { x: getRandomInt(), y: getRandomInt() };
 
@@ -22,7 +26,7 @@ function main(current) {
   updateSnakePosition();
 }
 
-//Check Scores
+//-------------Check Scores-------------
 if (bestScore === null) {
   bestScoreFromLocal = 0;
   localStorage.setItem("bestScore", JSON.stringify(bestScoreFromLocal));
@@ -37,7 +41,7 @@ function CheckCollision(snake) {
       return true;
     }
   }
-  // check wall
+  //-------------Check Wall-------------
   if (
     snake[0].x >= 20 ||
     snake[0].y >= 20 ||
@@ -49,7 +53,8 @@ function CheckCollision(snake) {
   return false;
 }
 
-//Update snake position
+//-------------Update snake position-------------
+
 function updateSnakePosition() {
   board.innerHTML = "";
   if (CheckCollision(snakeArray)) {
@@ -65,11 +70,13 @@ function updateSnakePosition() {
   ) {
     console.log(score);
 
-    //Update scores best and current
+    //-------------Update scores best and current-------------
+
     score += 1;
     if (score > bestScoreFromLocal) {
       bestScoreFromLocal = score;
-      //Local Storage for Highest score
+
+      //-------------Local Storage for Highest score-------------
       localStorage.setItem("bestScore", JSON.stringify(bestScoreFromLocal));
       bestScoreboard.innerHTML = "Best Score: " + bestScoreFromLocal;
     }
@@ -90,6 +97,7 @@ function updateSnakePosition() {
     snakeArray[i + 1] = { ...snakeArray[i] };
   }
 
+  //-------------Display The Snake-------------
   snakeArray[0].x += direction.x;
   snakeArray[0].y += direction.y;
   snakeArray.forEach((e, index) => {
@@ -105,7 +113,7 @@ function updateSnakePosition() {
     board.appendChild(snakeObject);
   });
 
-  // Display the Apple
+  //-------------Display The Apple-------------
   appleObject = document.createElement("div");
   appleObject.style.gridRowStart = applePositions.y;
   appleObject.style.gridColumnStart = applePositions.x;
@@ -113,7 +121,7 @@ function updateSnakePosition() {
   board.appendChild(appleObject);
 }
 
-//Moving snake
+//-------------Moving The snake-------------
 window.requestAnimationFrame(main);
 window.addEventListener("keydown", (e) => {
   direction = { x: 0, y: 1 };

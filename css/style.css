@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
 }
-
+/* -------------------Score Boxes-------------------*/
 .scoresBox {
   display: flex;
   flex-direction: row;
@@ -32,7 +32,7 @@
   font-size: 20px;
   font-weight: bold;
 }
-
+/* -------------------Board Game-------------------*/
 .board {
   margin-top: 20px;
   background: black;
@@ -45,6 +45,7 @@
   margin-bottom: 20px;
 }
 
+/* -------------------Media Quires for different sizes-------------------*/
 @media (max-width: 1025px) {
   .board {
     width: 580px;
@@ -77,6 +78,7 @@
   }
 }
 
+/* -------------------Snake And Apple-------------------*/
 .snakeHead {
   background-image: url("/img/snakeHead.png");
   background-size: cover;
