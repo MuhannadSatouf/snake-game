@@ -70,8 +70,8 @@ function updateSnakePosition() {
     if (score > bestScoreFromLocal) {
       bestScoreFromLocal = score;
       //Local Storage for Highest score
-      localStorage.setItem("bestscore", JSON.stringify(bestScoreFromLocal));
-      bestScore.innerHTML = "Best Score: " + bestScoreFromLocal;
+      localStorage.setItem("bestScore", JSON.stringify(bestScoreFromLocal));
+      bestScoreboard.innerHTML = "Best Score: " + bestScoreFromLocal;
     }
     scoreboard.innerHTML = "Score: " + score;
     snakeArray.unshift({
